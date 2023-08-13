@@ -33,7 +33,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             });
           },
           gap: 8,
-          backgroundColor: ColorsUsed.secondaryColor,
+          backgroundColor: ColorsUsed.primaryColor,
           color: Colors.white,
           activeColor: Colors.white,
           tabs: const [

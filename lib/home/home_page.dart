@@ -1,3 +1,4 @@
+import 'package:coinpulse/home/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -6,14 +7,18 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      appBar: AppBar(
+        title: const Text('Coin Pulse'),
+      ),
+      body: const Center(
         child: Column(
           children: [
-            ElevatedButton(onPressed: () {}, child: const Text('Legend')),
-            FloatingActionButton(
-              onPressed: () {},
-              child: const Text('mj'),
-            )
+            WelcomeScreen()
+            // ElevatedButton(onPressed: () {}, child: const Text('Legend')),
+            // FloatingActionButton(
+            //   onPressed: () {},
+            //   child: const Text('mj'),
+            // )
           ],
         ),
       ),
