@@ -15,51 +15,63 @@ class _ExpenseGeneratorState extends State<ExpenseGenerator> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ExpenseProvider>(builder: (context, notifier, child) {
-      return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.38,
-        child: ListView.separated(
-            itemBuilder: (context, index) {
-              final expenseItem = notifier.expenseList[index];
-              final convertDate = expenseItem.createdDate;
-              final cDate = DateFormat.yMMMEd().format(convertDate);
-              final cTime = DateFormat.jm().format(convertDate);
+      return notifier.expenseList.isEmpty
+          ? Container(
+              margin: const EdgeInsets.symmetric(vertical: 100, horizontal: 30),
+              child: const Text(
+                'No Transactions to display. Click the plus button to add something...',
+                style:
+                    TextStyle(color: ColorsUsed.secondaryColor, fontSize: 23),
+              ),
+            )
+          : SizedBox(
+              height: MediaQuery.of(context).size.height * 0.38,
+              child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    final expenseItem = notifier.expenseList[index];
+                    final convertDate = expenseItem.createdDate;
+                    final cDate = DateFormat.yMMMEd().format(convertDate);
+                    final cTime = DateFormat.jm().format(convertDate);
 
-              return ListTile(
-                leading: const CircleAvatar(
-                  backgroundColor: ColorsUsed.secondaryColor,
-                  child: Icon(Icons.camera),
-                ),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(expenseItem.title),
-                    Text(cDate),
-                  ],
-                ),
-                trailing: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        '-ksh ${expenseItem.amount}',
-                        style: const TextStyle(
-                          color: Colors.red,
+                    return ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: ColorsUsed.secondaryColor,
+                        child: Icon(
+                          Icons.camera,
+                          color: ColorsUsed.primaryColor,
                         ),
                       ),
-                      Text(cTime)
-                    ],
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Divider(
-                height: 7,
-                color: Colors.grey[700],
-              );
-            },
-            itemCount: notifier.expenseList.length),
-      );
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(expenseItem.title),
+                          Text(cDate),
+                        ],
+                      ),
+                      trailing: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              '-ksh ${expenseItem.amount}',
+                              style: const TextStyle(
+                                color: Colors.red,
+                              ),
+                            ),
+                            Text(cTime)
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      height: 7,
+                      color: Colors.grey[700],
+                    );
+                  },
+                  itemCount: notifier.expenseList.length),
+            );
     });
   }
 }

@@ -1,8 +1,8 @@
 import 'package:coinpulse/features/expenses/Domain/models/expenses_model.dart';
+import 'package:coinpulse/home/screens/tab_bar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../features/expenses/Presentation/pages/expense_generator.dart';
 import '../providers/expense_provider.dart';
 import '../utils/colors.dart';
 
@@ -118,19 +118,24 @@ class _DashBoardState extends State<DashBoard> {
                                 ),
                                 Consumer<ExpenseProvider>(
                                     builder: (context, notifier, child) {
-                                  final income =
-                                      int.parse(displayedIncome ?? '');
+                                  final income = int.parse(displayedIncome);
                                   final expenses = notifier.tAmount;
 
                                   final result = income > expenses
                                       ? (income) - (expenses)
                                       : 'OverBudget';
 
-                                  return Text(
-                                    '$result',
-                                    style: const TextStyle(
-                                        fontSize: 25, color: Colors.white),
-                                  );
+                                  return income == expenses
+                                      ? const Text('Ksh: 0',
+                                          style: TextStyle(
+                                              fontSize: 25,
+                                              color: Colors.white))
+                                      : Text(
+                                          '$result',
+                                          style: const TextStyle(
+                                              fontSize: 25,
+                                              color: Colors.white),
+                                        );
                                 }),
                               ],
                             ),
@@ -243,7 +248,7 @@ class _DashBoardState extends State<DashBoard> {
               ],
             ),
           ),
-          const ExpenseGenerator(),
+          const MyWidget(),
         ],
       ),
     );
