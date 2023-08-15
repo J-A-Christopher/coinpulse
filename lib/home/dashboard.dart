@@ -1,4 +1,5 @@
 import 'package:coinpulse/features/expenses/Domain/models/expenses_model.dart';
+import 'package:coinpulse/features/expenses/Presentation/Domain/models/income_model.dart';
 import 'package:coinpulse/home/screens/tab_bar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,20 @@ class _DashBoardState extends State<DashBoard> {
       createdDate: DateTime.now(),
       title: '',
       id: DateTime.now().toString());
+
+  IncomeModel incomeModel = IncomeModel(
+      createdTime: DateTime.now(),
+      incomeAmount: 0,
+      incomeTitle: '',
+      id: DateTime.now().toString());
+
+  void createIncome() {
+    _formState.currentState!.save();
+    Provider.of<ExpenseProvider>(context, listen: false)
+        .createIncome(incomeModel);
+    _formState.currentState!.reset();
+    Navigator.of(context).pop();
+  }
 
   void showExpenseDialog() {
     showDialog(
@@ -118,7 +133,7 @@ class _DashBoardState extends State<DashBoard> {
                                 ),
                                 Consumer<ExpenseProvider>(
                                     builder: (context, notifier, child) {
-                                  final income = int.parse(displayedIncome);
+                                  final income = notifier.totalIncome;
                                   final expenses = notifier.tAmount;
 
                                   final result = income > expenses
@@ -149,66 +164,86 @@ class _DashBoardState extends State<DashBoard> {
                                     'Income (Ksh)',
                                     style: TextStyle(fontSize: 20),
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      showDialog(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: const Text(
-                                                  'Fill in your income:'),
-                                              content: TextFormField(
-                                                validator: (value) {
-                                                  if (value!.isEmpty) {
-                                                    return 'Input cannot be empty';
-                                                  }
-                                                  return null;
-                                                },
-                                                controller: incomeValue,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  hintText: 'Amount',
-                                                ),
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
+                                  GestureDetector(onTap: () {
+                                    showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                                'Fill in your income:'),
+                                            content: Form(
+                                              key: _formState,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  TextFormField(
+                                                    onSaved: (value) {
+                                                      incomeModel = IncomeModel(
+                                                          createdTime:
+                                                              DateTime.now(),
+                                                          incomeAmount:
+                                                              incomeModel
+                                                                  .incomeAmount,
+                                                          incomeTitle: value!,
+                                                          id: DateTime.now()
+                                                              .toString());
                                                     },
-                                                    child:
-                                                        const Text('Cancel')),
-                                                TextButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        if (incomeValue
-                                                            .text.isNotEmpty) {
-                                                          displayedIncome =
-                                                              incomeValue.text;
-                                                        } else {
-                                                          displayedIncome =
-                                                              'N/A';
-                                                        }
-                                                      });
-                                                      if (incomeValue
-                                                          .text.isNotEmpty) {
-                                                        incomeValue.text = '';
-                                                        Navigator.of(context)
-                                                            .pop();
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            hintText:
+                                                                'Income title e.g salary'),
+                                                  ),
+                                                  TextFormField(
+                                                    onSaved: (value) {
+                                                      incomeModel = IncomeModel(
+                                                          createdTime:
+                                                              DateTime.now(),
+                                                          incomeAmount:
+                                                              int.parse(value!),
+                                                          incomeTitle:
+                                                              incomeModel
+                                                                  .incomeTitle,
+                                                          id: DateTime.now()
+                                                              .toString());
+                                                    },
+                                                    validator: (value) {
+                                                      if (value!.isEmpty) {
+                                                        return 'Input cannot be empty';
                                                       }
+                                                      return null;
                                                     },
-                                                    child: const Text('Submit'))
-                                              ],
-                                            );
-                                          });
-                                    },
-                                    child: Text('Ksh: $displayedIncome ',
+                                                    controller: incomeValue,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      hintText: 'Amount',
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text('Cancel')),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    createIncome();
+                                                  },
+                                                  child: const Text('Submit'))
+                                            ],
+                                          );
+                                        });
+                                  }, child: Consumer<ExpenseProvider>(
+                                      builder: (context, notifier, child) {
+                                    return Text('Ksh: ${notifier.totalIncome} ',
                                         style: const TextStyle(
-                                            fontSize: 25, color: Colors.white)),
-                                  )
+                                            fontSize: 25, color: Colors.white));
+                                  }))
                                 ],
                               ),
                             )
