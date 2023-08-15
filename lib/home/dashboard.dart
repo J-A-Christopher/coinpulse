@@ -1,7 +1,7 @@
 import 'package:coinpulse/features/expenses/Domain/models/expenses_model.dart';
-import 'package:coinpulse/features/expenses/Presentation/bloc/expenses_bloc.dart';
+import 'package:coinpulse/providers/expense_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../features/expenses/Presentation/pages/expense_generator.dart';
 import '../utils/colors.dart';
@@ -75,11 +75,10 @@ class _DashBoardState extends State<DashBoard> {
 
   void submitForm() {
     _formState.currentState!.save();
-    context.read<ExpensesBloc>().add(CreateExpense(expenses: newExpense));
-    // print(newExpense.amount);
-    // print(newExpense.createdDate);
-    // print(newExpense.id);
-    // print(newExpense.title);
+    Provider.of<ExpenseProvider>(context, listen: false)
+        .createExpense(newExpense);
+    Provider.of<ExpenseProvider>(context, listen: false).tAmount;
+
     Navigator.of(context).pop();
   }
 
@@ -194,15 +193,29 @@ class _DashBoardState extends State<DashBoard> {
                                         'Ksh: ${displayedIncome ?? 'N/A'}',
                                         style: const TextStyle(
                                             fontSize: 25, color: Colors.white)),
-                                  )
+                                  ),
                                 ],
                               ),
                             )
                           ],
                         ),
+                        //Text('Total Expenses: $totalExpenses')
                       ],
                     ),
                   )),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Recent Transactions',
+                  style: TextStyle(fontSize: 22),
+                ),
+                TextButton(onPressed: () {}, child: const Text('See All'))
+              ],
             ),
           ),
           const ExpenseGenerator(),

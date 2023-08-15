@@ -42,6 +42,8 @@ dependencies:
   equatable: ^2.0.5
   build_runner: ^2.4.6
   injectable_generator: ^2.3.0
+  provider: ^6.0.5
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

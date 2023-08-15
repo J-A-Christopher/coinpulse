@@ -12,14 +12,7 @@ class HomePage extends StatelessWidget {
       ),
       body: const Center(
         child: Column(
-          children: [
-            WelcomeScreen()
-            // ElevatedButton(onPressed: () {}, child: const Text('Legend')),
-            // FloatingActionButton(
-            //   onPressed: () {},
-            //   child: const Text('mj'),
-            // )
-          ],
+          children: [WelcomeScreen()],
         ),
       ),
     );
