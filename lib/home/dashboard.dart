@@ -1,9 +1,9 @@
 import 'package:coinpulse/features/expenses/Domain/models/expenses_model.dart';
-import 'package:coinpulse/providers/expense_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../features/expenses/Presentation/pages/expense_generator.dart';
+import '../providers/expense_provider.dart';
 import '../utils/colors.dart';
 
 class DashBoard extends StatefulWidget {
@@ -15,7 +15,7 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard> {
   TextEditingController incomeValue = TextEditingController();
-  String? displayedIncome = 'N/A';
+  String displayedIncome = '0';
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
   ExpenseModel newExpense = ExpenseModel(
       amount: '',
@@ -110,17 +110,28 @@ class _DashBoardState extends State<DashBoard> {
                       children: [
                         Row(
                           children: [
-                            const Column(
+                            Column(
                               children: [
-                                Text(
+                                const Text(
                                   'Total Balance (Ksh)',
                                   style: TextStyle(fontSize: 20),
                                 ),
-                                Text(
-                                  'Ksh 200',
-                                  style: TextStyle(
-                                      fontSize: 25, color: Colors.white),
-                                )
+                                Consumer<ExpenseProvider>(
+                                    builder: (context, notifier, child) {
+                                  final income =
+                                      int.parse(displayedIncome ?? '');
+                                  final expenses = notifier.tAmount;
+
+                                  final result = income > expenses
+                                      ? (income) - (expenses)
+                                      : 'OverBudget';
+
+                                  return Text(
+                                    '$result',
+                                    style: const TextStyle(
+                                        fontSize: 25, color: Colors.white),
+                                  );
+                                }),
                               ],
                             ),
                             const SizedBox(
@@ -189,32 +200,46 @@ class _DashBoardState extends State<DashBoard> {
                                             );
                                           });
                                     },
-                                    child: Text(
-                                        'Ksh: ${displayedIncome ?? 'N/A'}',
+                                    child: Text('Ksh: $displayedIncome ',
                                         style: const TextStyle(
                                             fontSize: 25, color: Colors.white)),
-                                  ),
+                                  )
                                 ],
                               ),
                             )
                           ],
                         ),
-                        //Text('Total Expenses: $totalExpenses')
+                        Consumer<ExpenseProvider>(
+                            builder: (context, notifier, child) {
+                          return Column(
+                            children: [
+                              const Text(
+                                'Total Expenses',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              Text(
+                                'Ksh: ${notifier.tAmount}',
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 25),
+                              )
+                            ],
+                          );
+                        })
                       ],
                     ),
                   )),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 7),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
                   'Recent Transactions',
-                  style: TextStyle(fontSize: 22),
+                  style: TextStyle(fontSize: 20),
                 ),
-                TextButton(onPressed: () {}, child: const Text('See All'))
+                TextButton(onPressed: () {}, child: const Text('See all'))
               ],
             ),
           ),

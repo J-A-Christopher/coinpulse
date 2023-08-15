@@ -16,7 +16,7 @@ class _ExpenseGeneratorState extends State<ExpenseGenerator> {
   Widget build(BuildContext context) {
     return Consumer<ExpenseProvider>(builder: (context, notifier, child) {
       return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.4,
+        height: MediaQuery.of(context).size.height * 0.38,
         child: ListView.separated(
             itemBuilder: (context, index) {
               final expenseItem = notifier.expenseList[index];

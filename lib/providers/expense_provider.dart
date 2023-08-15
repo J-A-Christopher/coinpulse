@@ -15,7 +15,7 @@ class ExpenseProvider with ChangeNotifier {
     totalExpenses =
         amount.fold(0, (previousValue, element) => previousValue + element!);
     notifyListeners();
-    print(totalExpenses);
+    //print(totalExpenses);
 
     return totalExpenses;
   }
