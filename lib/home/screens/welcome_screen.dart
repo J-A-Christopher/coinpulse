@@ -26,8 +26,8 @@ class WelcomeScreen extends StatelessWidget {
               'A Welcome Message From Our Team:',
               style: TextStyle(color: ColorsUsed.primaryColor, fontSize: 20),
             ),
-            const SizedBox(
-              height: 10,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
             ),
             Card(
               color: Colors.grey[100],
@@ -39,24 +39,24 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 10,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
             ),
             Card(
               color: Colors.grey[100],
-              child: const Padding(
-                padding: EdgeInsets.all(13.0),
+              child: Padding(
+                padding: const EdgeInsets.all(13.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Perks you will enjoy are:',
                       //style: TextStyle(fontSize: 20),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: MediaQuery.of(context).size.height * 0.01,
                     ),
-                    Row(
+                    const Row(
                       children: [
                         Text(
                           '\u2022',
@@ -71,7 +71,7 @@ class WelcomeScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    Row(
+                    const Row(
                       children: [
                         Text(
                           '\u2022',
@@ -86,7 +86,7 @@ class WelcomeScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    Row(
+                    const Row(
                       children: [
                         Text(
                           '\u2022',
@@ -101,7 +101,7 @@ class WelcomeScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    Row(
+                    const Row(
                       children: [
                         Text(
                           '\u2022',
@@ -116,7 +116,7 @@ class WelcomeScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    Row(
+                    const Row(
                       children: [
                         Text(
                           '\u2022',
