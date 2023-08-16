@@ -18,6 +18,7 @@ class _DashBoardState extends State<DashBoard> {
   TextEditingController incomeValue = TextEditingController();
   String displayedIncome = '0';
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
+  final GlobalKey<FormState> _incomeForm = GlobalKey<FormState>();
   ExpenseModel newExpense = ExpenseModel(
       amount: '',
       createdDate: DateTime.now(),
@@ -31,10 +32,11 @@ class _DashBoardState extends State<DashBoard> {
       id: DateTime.now().toString());
 
   void createIncome() {
-    _formState.currentState!.save();
+    _incomeForm.currentState!.save();
     Provider.of<ExpenseProvider>(context, listen: false)
         .createIncome(incomeModel);
-    _formState.currentState!.reset();
+    _incomeForm.currentState!.reset();
+
     Navigator.of(context).pop();
   }
 
@@ -173,7 +175,7 @@ class _DashBoardState extends State<DashBoard> {
                                             title: const Text(
                                                 'Fill in your income:'),
                                             content: Form(
-                                              key: _formState,
+                                              key: _incomeForm,
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
@@ -185,7 +187,8 @@ class _DashBoardState extends State<DashBoard> {
                                                           incomeAmount:
                                                               incomeModel
                                                                   .incomeAmount,
-                                                          incomeTitle: value!,
+                                                          incomeTitle:
+                                                              value ?? '',
                                                           id: DateTime.now()
                                                               .toString());
                                                     },
@@ -200,7 +203,8 @@ class _DashBoardState extends State<DashBoard> {
                                                           createdTime:
                                                               DateTime.now(),
                                                           incomeAmount:
-                                                              int.parse(value!),
+                                                              int.parse(
+                                                                  value ?? ''),
                                                           incomeTitle:
                                                               incomeModel
                                                                   .incomeTitle,
@@ -208,7 +212,8 @@ class _DashBoardState extends State<DashBoard> {
                                                               .toString());
                                                     },
                                                     validator: (value) {
-                                                      if (value!.isEmpty) {
+                                                      if (value == null ||
+                                                          value.isEmpty) {
                                                         return 'Input cannot be empty';
                                                       }
                                                       return null;

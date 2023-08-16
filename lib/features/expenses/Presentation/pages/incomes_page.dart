@@ -11,53 +11,66 @@ class IncomesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ExpenseProvider>(builder: (context, notifier, child) {
-      return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.38,
-        child: ListView.separated(
-            itemBuilder: (context, index) {
-              final expenseItem = notifier.incomeList[index];
-              final convertDate = expenseItem.createdTime;
-              final cDate = DateFormat.yMMMEd().format(convertDate);
-              final cTime = DateFormat.jm().format(convertDate);
-              return ListTile(
-                leading: const CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.account_balance_wallet,
-                    color: ColorsUsed.primaryColor,
-                  ),
+      return notifier.incomeList.isEmpty
+          ? Center(
+              child: Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10,
                 ),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(expenseItem.incomeTitle),
-                    Text(cDate),
-                  ],
+                child: const Text(
+                  'Nothing to display.Tap the income text on the card to add your income.',
+                  style:
+                      TextStyle(fontSize: 17, color: ColorsUsed.secondaryColor),
                 ),
-                trailing: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        '-ksh ${expenseItem.incomeAmount}',
-                        style: const TextStyle(
-                          color: Colors.red,
+              ),
+            )
+          : SizedBox(
+              height: MediaQuery.of(context).size.height * 0.38,
+              child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    final expenseItem = notifier.incomeList[index];
+                    final convertDate = expenseItem.createdTime;
+                    final cDate = DateFormat.yMMMEd().format(convertDate);
+                    final cTime = DateFormat.jm().format(convertDate);
+                    return ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.account_balance_wallet,
+                          color: ColorsUsed.primaryColor,
                         ),
                       ),
-                      Text(cTime)
-                    ],
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Divider(
-                height: 1,
-                color: Colors.grey[700],
-              );
-            },
-            itemCount: notifier.incomeList.length),
-      );
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(expenseItem.incomeTitle),
+                          Text(cDate),
+                        ],
+                      ),
+                      trailing: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              '+ksh ${expenseItem.incomeAmount}',
+                              style: const TextStyle(
+                                color: Colors.red,
+                              ),
+                            ),
+                            Text(cTime)
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      height: 1,
+                      color: Colors.grey[700],
+                    );
+                  },
+                  itemCount: notifier.incomeList.length),
+            );
     });
   }
 }
